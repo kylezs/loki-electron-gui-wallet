@@ -3,8 +3,15 @@
     <q-btn class="menu" icon="menu" size="md" flat>
       <q-menu>
         <q-list separator class="menu-list">
-          <q-item v-if="!disableSwitchWallet" v-close-popup clickable @click.native="switchWallet">
-            <q-item-label header>{{ $t("menuItems.switchWallet") }}</q-item-label>
+          <q-item
+            v-if="!disableSwitchWallet"
+            v-close-popup
+            clickable
+            @click.native="switchWallet"
+          >
+            <q-item-label header>{{
+              $t("menuItems.switchWallet")
+            }}</q-item-label>
           </q-item>
           <q-item v-close-popup clickable @click.native="openSettings">
             <q-item-label header>{{ $t("menuItems.settings") }}</q-item-label>
@@ -32,16 +39,40 @@
 
         <div class="q-mt-md q-mb-lg external-links">
           <p>
-            <a href="#" @click="openExternal('https://loki.network/')">https://loki.network/</a>
+            <a href="#" @click="openExternal('https://loki.network/')"
+              >https://loki.network/</a
+            >
           </p>
           <p>
-            <a href="#" @click="openExternal('https://t.me/joinchat/DeNvR0JJ4JPn6TVSQjCsZQ')">Telegram</a>
+            <a
+              href="#"
+              @click="
+                openExternal('https://t.me/joinchat/DeNvR0JJ4JPn6TVSQjCsZQ')
+              "
+              >Telegram</a
+            >
             -
-            <a href="#" @click="openExternal('https://discordapp.com/invite/67GXfD6')">Discord</a>
+            <a
+              href="#"
+              @click="openExternal('https://discordapp.com/invite/67GXfD6')"
+              >Discord</a
+            >
             -
-            <a href="#" @click="openExternal('https://www.reddit.com/r/LokiProject/')">Reddit</a>
+            <a
+              href="#"
+              @click="openExternal('https://www.reddit.com/r/LokiProject/')"
+              >Reddit</a
+            >
             -
-            <a href="#" @click="openExternal('https://github.com/loki-project/loki-electron-gui-wallet')">Github</a>
+            <a
+              href="#"
+              @click="
+                openExternal(
+                  'https://github.com/loki-project/loki-electron-gui-wallet'
+                )
+              "
+              >Github</a
+            >
           </p>
         </div>
         <q-btn color="primary" label="Close" @click="showAbout(false)" />
@@ -96,31 +127,29 @@ export default {
     switchWallet() {
       // If the rpc is syncing then we want to tell the user to restart
       if (this.isRPCSyncing) {
-        this.$gateway.confirmClose(this.$t("dialog.switchWallet.restartMessage"), true);
+        this.$gateway.confirmClose(
+          this.$t("dialog.switchWallet.restartMessage"),
+          true
+        );
         return;
       }
 
-      // TODO: Remove this in hardfork 16
-      // This is a temporary work around for the issue where wallet rpc hangs after closing a wallet due to long polling still being active
-      this.$gateway.confirmClose(this.$t("dialog.switchWallet.restartWalletMessage"), true);
-
-      // Allow switching normally because rpc won't be blocked
-      // NB: If this is added back, must use the quasar v1 APIs
-      /*
       this.$q
         .dialog({
           title: this.$t("dialog.switchWallet.title"),
           message: this.$t("dialog.switchWallet.closeMessage"),
           ok: {
-            label: this.$t("dialog.buttons.ok")
+            label: this.$t("dialog.buttons.ok"),
+            color: "primary"
           },
           cancel: {
             flat: true,
             label: this.$t("dialog.buttons.cancel"),
             color: this.theme == "dark" ? "white" : "dark"
-          }
+          },
+          dark: this.theme === "dark"
         })
-        .then(() => {
+        .onOk(() => {
           this.$router.replace({ path: "/wallet-select" });
           this.$gateway.send("wallet", "close_wallet");
           setTimeout(() => {
@@ -129,8 +158,8 @@ export default {
             this.$store.dispatch("gateway/resetWalletData");
           }, 250);
         })
-        .catch(() => {});
-       */
+        .onCancel(() => {})
+        .onDismiss(() => {});
     },
     exit() {
       this.$gateway.confirmClose(this.$t("dialog.exit.message"));
