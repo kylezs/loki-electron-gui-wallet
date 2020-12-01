@@ -1,10 +1,9 @@
 <template>
   <q-page>
     <div class="row q-pt-sm q-mx-md q-mb-sm items-end non-selectable">
-      <div class="col-5">
+      <div class="col-4">
         {{ $t("titles.transactions") }}
       </div>
-
       <LokiField class="col-5 q-px-sm" :label="$t('fieldLabels.filter')">
         <q-input
           v-model="tx_filter"
@@ -14,7 +13,6 @@
           dense
         />
       </LokiField>
-
       <LokiField class="col-2" :label="$t('fieldLabels.filterTransactionType')">
         <q-select
           v-model="tx_type"
@@ -26,6 +24,18 @@
           map-options
         />
       </LokiField>
+      <div class="col-1">
+        <q-btn
+          flat
+          :text-color="theme == 'dark' ? 'white' : 'dark'"
+          class="export-csv q-mx-md"
+          icon="publish"
+        >
+          <q-tooltip anchor="center left" self="center right" :offset="[5, 10]">
+            {{ $t("buttons.export") }}
+          </q-tooltip>
+        </q-btn>
+      </div>
     </div>
     <TxList :type="tx_type" :filter="tx_filter" />
   </q-page>
