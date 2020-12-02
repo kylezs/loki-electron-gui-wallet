@@ -185,6 +185,15 @@ export class Gateway extends EventEmitter {
         break;
       }
 
+      case "set_export_tx_status": {
+        const data = { ...decrypted_data.data };
+        if (data.i18n) {
+          data.message = this.geti18n(data.i18n);
+        }
+        this.app.store.commit("gateway/set_export_tx_status", data);
+        break;
+      }
+
       case "set_sweep_all_status": {
         const data = { ...decrypted_data.data };
         if (data.i18n) {

@@ -57,6 +57,12 @@ export default {
     i18n: "",
     sending: false
   },
+  export_tx_status: {
+    code: 0,
+    message: "",
+    i18n: "",
+    sending: false
+  },
   // differentiate between a tx and sweep_all
   sweep_all_status: {
     code: 0,

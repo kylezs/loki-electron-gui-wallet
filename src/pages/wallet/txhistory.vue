@@ -30,6 +30,7 @@
           :text-color="theme == 'dark' ? 'white' : 'dark'"
           class="export-csv q-mx-md"
           icon="publish"
+          @click="exportCSV"
         >
           <q-tooltip anchor="center left" self="center right" :offset="[5, 10]">
             {{ $t("buttons.export") }}
@@ -97,7 +98,13 @@ export default {
   computed: mapState({
     theme: state => state.gateway.app.config.appearance.theme,
     tx_list: state => state.gateway.wallet.transactions.tx_list
-  })
+  }),
+  methods: {
+    exportCSV() {
+      console.log("Called export CSV");
+      this.$gateway.send("wallet", "exportCSV");
+    }
+  }
 };
 </script>
 

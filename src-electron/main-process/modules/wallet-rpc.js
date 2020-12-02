@@ -336,6 +336,10 @@ export class WalletRPC {
         );
         break;
 
+      case "exportCSV":
+        this.exportCSV();
+        break;
+
       case "transfer":
         this.transfer(
           params.password,
@@ -967,6 +971,25 @@ export class WalletRPC {
         }
       }
     });
+  }
+
+  async exportCSV() {
+    this.sendGateway("set_sign_status", {
+      code: 0,
+      sending: true
+    });
+    console.log("Export csv in wallet rpc");
+    try {
+      const data = await this.sendRPC("get_transfers_csv");
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+      this.sendGateway("set_sign_status", {
+        code: -1,
+        message: e.message,
+        sending: true
+      });
+    }
   }
 
   async updateLocalLNSRecords() {
